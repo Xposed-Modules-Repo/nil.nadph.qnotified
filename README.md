@@ -3,7 +3,6 @@
 [![Build status](https://build.appcenter.ms/v0.1/apps/599b1851-3361-4e64-a277-6a4c8f6e7332/branches/master/badge)](https://install.appcenter.ms/orgs/qnotifieddev/apps/qnotified/distribution_groups/alpha)
 [![license](https://img.shields.io/github/license/ferredoxin/QNotified.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![GitHub release](https://img.shields.io/github/release/ferredoxin/QNotified.svg)](https://github.com/ferredoxin/QNotified/releases/latest)
-
 ---
 
 **QNotified开发组,管理组已正式休止活动，后续开发工作将由你们进行，感谢陪伴。**
@@ -97,4 +96,4 @@ QNotified is a Xposed module for mobile QQ that aims to:
 - 抢红包
 - 群发图片或其他类型消息
 
-## [QNotified最终用户许可协议](./app/src/main/assets/eula.txt)
+## [QNotified最终用户许可协议](https://github.com/ferredoxin/QNotified/blob/master/app/src/main/assets/eula.txt)
