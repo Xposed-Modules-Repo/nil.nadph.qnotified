@@ -1,4 +1,5 @@
-/* QNotified - An Xposed module for QQ/TIM
+/*
+ * QNotified - An Xposed module for QQ/TIM
  * Copyright (C) 2019-2021 xenonhydride@gmail.com
  * https://github.com/ferredoxin/QNotified
  *
@@ -16,23 +17,26 @@
  * along with this software.  If not, see
  * <https://www.gnu.org/licenses/>.
  */
-package me.ketal.hook
 
-import ltd.nextalone.util.replaceNull
-import me.ketal.util.HookUtil.getMethod
-import nil.nadph.qnotified.hook.CommonDelayableHook
-import nil.nadph.qnotified.util.Utils
+package me.singleneuron.qn_kernel.demo;
 
-object HideAssistantRemoveTips: CommonDelayableHook("ketal_hide_assistant_removetips") {
-    override fun initOnce(): Boolean {
-        return try {
-            "Lcom/tencent/mobileqq/activity/ChatActivityUtils;->a(Landroid/content/Context;Ljava/lang/String;Landroid/view/View\$OnClickListener;Landroid/view/View\$OnClickListener;)Landroid/view/View;"
-                .getMethod()
-                ?.replaceNull(this)
-            true
-        } catch (e: Exception) {
-            Utils.log(e)
-            false
-        }
+import androidx.annotation.NonNull;
+
+import me.singleneuron.qn_kernel.annotation.HookLoadable;
+import me.singleneuron.qn_kernel.annotation.ModuleInfo;
+import nil.nadph.qnotified.hook.CommonDelayableHook;
+import nil.nadph.qnotified.step.Step;
+
+@HookLoadable
+//此注解将在编译时将整个类处理为AnotherJavaHook的形式
+@ModuleInfo(name = "A",description = "A's description")
+public class JavaHook extends CommonDelayableHook {
+    protected JavaHook(@NonNull String keyName, @NonNull Step... preconditions) {
+        super(keyName, preconditions);
+    }
+
+    @Override
+    protected boolean initOnce() {
+        return false;
     }
 }

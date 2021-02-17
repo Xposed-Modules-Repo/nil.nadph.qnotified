@@ -31,7 +31,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 
 import cn.lliiooll.hook.AntiMessage;
@@ -63,9 +62,11 @@ import cc.ioctl.hook.ReplyNoAtHook;
 import cc.ioctl.hook.RevokeMsgHook;
 import cc.ioctl.hook.RoundAvatarHook;
 import cc.ioctl.hook.ShowPicGagHook;
+import ltd.nextalone.hook.ChatWordsCount;
 import me.ketal.activity.ModifyLeftSwipeReplyActivity;
 import me.ketal.hook.LeftSwipeReplyHook;
 import me.ketal.hook.MultiActionHook;
+import me.ketal.hook.QWalletNoAD;
 import me.ketal.hook.QZoneNoAD;
 import me.ketal.hook.SendFavoriteHook;
 import me.ketal.hook.SortAtPanel;
@@ -80,7 +81,6 @@ import me.singleneuron.hook.decorator.DisableQzoneSlideCamera;
 import me.singleneuron.hook.decorator.SimpleReceiptMessage;
 import me.singleneuron.qn_kernel.data.HostInformationProviderKt;
 import me.singleneuron.util.KotlinUtilsKt;
-import nil.nadph.qnotified.ExfriendManager;
 import nil.nadph.qnotified.MainHook;
 import nil.nadph.qnotified.R;
 import nil.nadph.qnotified.config.ConfigItems;
@@ -94,7 +94,6 @@ import nil.nadph.qnotified.util.*;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY;
 import static me.singleneuron.util.KotlinUtilsKt.addViewConditionally;
 import static me.singleneuron.util.QQVersion.QQ_8_2_6;
 import static nil.nadph.qnotified.ui.ViewBuilder.*;
@@ -222,7 +221,8 @@ public class SettingsActivity extends IphoneTitleBarActivityCompat implements Ru
         ll.addView(newListItemHookSwitchInit(this, "屏蔽QQ空间滑动相机", null, DisableQzoneSlideCamera.INSTANCE));
         ll.addView(newListItemHookSwitchInit(this, "回执消息文本化", null, SimpleReceiptMessage.INSTANCE));
         ll.addView(newListItemButtonIfValid(this, "屏蔽指定类型消息", null, null, AntiMessage.INSTANCE));
-        ll.addView(newListItemButtonIfValid(this, "精简聊天气泡长按菜单", null, null, SimplifyChatLongItem.INSTANCE));
+        ll.addView(newListItemButtonIfValid(this, "聊天字数统计", null, null, ChatWordsCount.INSTANCE, v -> ChatWordsCount.INSTANCE.showChatWordsCountDialog(this)));
+        ll.addView(newListItemButtonIfValid(this, "精简聊天气泡长按菜单", null, null, SimplifyChatLongItem.INSTANCE, SimplifyChatLongItem.INSTANCE.listener()));
         ll.addView(newListItemButtonIfValid(this, "精简加号菜单", null, null, SimplifyPlusPanel.INSTANCE));
         ll.addView(newListItemButtonIfValid(this, "精简设置菜单", null, null, SimplifyQQSettings.INSTANCE));
         ll.addView(newListItemHookSwitchInit(this, "批量撤回消息", "多选消息后撤回", MultiActionHook.INSTANCE));
@@ -230,6 +230,7 @@ public class SettingsActivity extends IphoneTitleBarActivityCompat implements Ru
         ll.addView(newListItemConfigSwitchIfValid(this, "修改@界面排序", "排序由群主管理员至正常人员", SortAtPanel.INSTANCE));
         ll.addView(newListItemConfigSwitchIfValid(this, "发送收藏消息添加分组", null, SendFavoriteHook.INSTANCE));
         ll.addView(newListItemConfigSwitchIfValid(this, "隐藏空间好友热播和广告", null, QZoneNoAD.INSTANCE));
+        ll.addView(newListItemConfigSwitchIfValid(this, "隐藏QQ钱包超值精选", null, QWalletNoAD.INSTANCE));
         ll.addView(subtitle(this, "好友列表"));
         ll.addView(newListItemButton(this, "打开资料卡", "打开指定用户的资料卡", null, new View.OnClickListener() {
             @Override

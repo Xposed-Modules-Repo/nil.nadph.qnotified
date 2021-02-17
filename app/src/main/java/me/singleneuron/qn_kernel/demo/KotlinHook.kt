@@ -1,4 +1,5 @@
-/* QNotified - An Xposed module for QQ/TIM
+/*
+ * QNotified - An Xposed module for QQ/TIM
  * Copyright (C) 2019-2021 xenonhydride@gmail.com
  * https://github.com/ferredoxin/QNotified
  *
@@ -16,28 +17,18 @@
  * along with this software.  If not, see
  * <https://www.gnu.org/licenses/>.
  */
-package ltd.nextalone.hook
-
-import android.view.View
-import ltd.nextalone.util.replaceNull
+import me.singleneuron.qn_kernel.annotation.HookLoadable
+import me.singleneuron.qn_kernel.data.ModuleInfo
 import nil.nadph.qnotified.hook.CommonDelayableHook
-import nil.nadph.qnotified.util.DexKit
-import nil.nadph.qnotified.util.Utils
-import java.lang.reflect.Method
 
-object RemoveIntimateDrawer : CommonDelayableHook("kr_remove_intimate_drawer") {
+@HookLoadable
+object KotlinHook : CommonDelayableHook("C",null), ModuleInfo {
 
+    override val name: String = "B"
+    override val description: String = "B's description"
     override fun initOnce(): Boolean {
-        return try {
-            for (m: Method in DexKit.doFindClass(DexKit.C_IntimateDrawer)!!.declaredMethods) {
-                if (m.name == "a" && m.returnType == View::class.java) {
-                    m.replaceNull(this)
-                }
-            }
-            true
-        } catch (t: Throwable) {
-            Utils.log(t)
-            false
-        }
+        TODO("Not yet implemented")
     }
+
+
 }

@@ -1,4 +1,5 @@
-/* QNotified - An Xposed module for QQ/TIM
+/*
+ * QNotified - An Xposed module for QQ/TIM
  * Copyright (C) 2019-2021 xenonhydride@gmail.com
  * https://github.com/ferredoxin/QNotified
  *
@@ -16,38 +17,7 @@
  * along with this software.  If not, see
  * <https://www.gnu.org/licenses/>.
  */
-package ltd.nextalone.util
 
-import nil.nadph.qnotified.util.Utils
+package me.singleneuron.qn_kernel.annotation
 
-internal fun logd(msg: String) {
-    Utils.logd("NA: $msg")
-}
-
-internal fun logThrowable(msg: Throwable) {
-    logd("Throwable: ${msg.stackTraceToString()}")
-}
-
-internal fun logDetail(info: String, msg: String = "") {
-    logd("$info--$msg")
-}
-
-internal fun logClass(msg: String = "") {
-    logd("Class--$msg")
-}
-
-internal fun logMethod(msg: String = "") {
-    logd("Method--$msg")
-}
-
-internal fun logStart(msg: String = "") {
-    logd("Start--$msg")
-}
-
-internal fun logBefore(msg: String = "") {
-    logd("Before--$msg")
-}
-
-internal fun logAfter(msg: String = "") {
-    logd("After--$msg")
-}
+annotation class HookLoadable()
