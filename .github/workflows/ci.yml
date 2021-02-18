@@ -46,7 +46,7 @@ jobs:
         keyPassword: ${{ secrets.SIGN_KEY_PASSWORD }}
     - name: Get Apk Info
       id: apk
-      uses: JantHsueh/get-apk-version-action@master
+      uses: JantHsueh/get-apk-info-action@master
       with:
         apkPath: ${{steps.sign_app.outputs.signedReleaseFile}}
     - name: Github Release
