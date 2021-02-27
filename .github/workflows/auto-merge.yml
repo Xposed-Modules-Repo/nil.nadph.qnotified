@@ -26,7 +26,8 @@ jobs:
     - name: Load upstream commits
       run:
         git config pull.rebase true
-        git pull https://github.com/ferredoxin/QNotified.git master --log --rebase
+        
+        git pull https://github.com/ferredoxin/QNotified.git master --rebase
     - name: Apply commit changes
       run: |
         if [ -f ./.git/MERGE_MSG ]; then
