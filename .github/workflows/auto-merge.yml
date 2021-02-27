@@ -28,6 +28,7 @@ jobs:
         git config pull.rebase true
         
         git pull https://github.com/ferredoxin/QNotified.git master --rebase
+        git push -f
     - name: Apply commit changes
       run: |
         if [ -f ./.git/MERGE_MSG ]; then
@@ -38,7 +39,3 @@ jobs:
         else
         echo "There is no merge commits."
         fi
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.PAT}}
