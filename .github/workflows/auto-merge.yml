@@ -25,7 +25,7 @@ jobs:
         git config --global user.name "github-actions[bot]"
     - name: Load upstream commits
       run:
-        git pull https://github.com/ferredoxin/QNotified.git master --log --ff
+        git pull https://github.com/ferredoxin/QNotified.git master --log --rebase
     - name: Apply commit changes
       run: |
         if [ -f ./.git/MERGE_MSG ]; then
