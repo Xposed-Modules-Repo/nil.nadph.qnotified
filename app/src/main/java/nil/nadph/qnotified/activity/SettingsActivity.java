@@ -25,6 +25,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -245,7 +246,7 @@ public class SettingsActivity extends IphoneTitleBarActivityCompat implements Ru
                     public void onClick(View v) {
                         String text = editText.getText().toString();
                         if (text.equals("")) {
-                            showToast(SettingsActivity.this, TOAST_TYPE_ERROR, "请输入QQ号", Toast.LENGTH_SHORT);
+                            Toasts.error(SettingsActivity.this, "请输入QQ号");
                             return;
                         }
                         long uin = 0;
@@ -254,7 +255,7 @@ public class SettingsActivity extends IphoneTitleBarActivityCompat implements Ru
                         } catch (NumberFormatException ignored) {
                         }
                         if (uin < 10000) {
-                            showToast(SettingsActivity.this, TOAST_TYPE_ERROR, "请输入有效的QQ号", Toast.LENGTH_SHORT);
+                            Toasts.error(SettingsActivity.this, "请输入有效的QQ号");
                             return;
                         }
                         alertDialog.dismiss();
@@ -275,9 +276,10 @@ public class SettingsActivity extends IphoneTitleBarActivityCompat implements Ru
             @Override
             public void onClick(View v) {
                 if (Initiator.load("com.tencent.mobileqq.haoliyou.JefsClass") != null) {
-                    MainHook.startProxyActivity(v.getContext(), JefsRulesActivity.class);
+                    Context ctx = v.getContext();
+                    ctx.startActivity(new Intent(ctx, JefsRulesActivity.class));
                 } else {
-                    Utils.showToast(SettingsActivity.this, TOAST_TYPE_ERROR, "当前版本客户端版本不支持", Toast.LENGTH_SHORT);
+                    Toasts.error(SettingsActivity.this, "当前版本客户端版本不支持");
                 }
             }
         }));
@@ -536,20 +538,20 @@ public class SettingsActivity extends IphoneTitleBarActivityCompat implements Ru
             public void onClick(View v) {
                 String path = editText.getText().toString();
                 if (path.equals("")) {
-                    showToast(SettingsActivity.this, TOAST_TYPE_ERROR, "请输入路径", Toast.LENGTH_SHORT);
+                    Toasts.error(SettingsActivity.this, "请输入路径");
                     return;
                 }
                 if (!path.startsWith("/")) {
-                    showToast(SettingsActivity.this, TOAST_TYPE_ERROR, "请输入完整路径(以\"/\"开头)", Toast.LENGTH_SHORT);
+                    Toasts.error(SettingsActivity.this, "请输入完整路径(以\"/\"开头)");
                     return;
                 }
                 File f = new File(path);
                 if (!f.exists() || !f.isDirectory()) {
-                    showToast(SettingsActivity.this, TOAST_TYPE_ERROR, "文件夹不存在", Toast.LENGTH_SHORT);
+                    Toasts.error(SettingsActivity.this, "文件夹不存在");
                     return;
                 }
                 if (!f.canWrite()) {
-                    showToast(SettingsActivity.this, TOAST_TYPE_ERROR, "文件夹无访问权限", Toast.LENGTH_SHORT);
+                    Toasts.error(SettingsActivity.this, "文件夹无访问权限");
                     return;
                 }
                 if (!path.endsWith("/")) path += "/";
@@ -572,7 +574,7 @@ public class SettingsActivity extends IphoneTitleBarActivityCompat implements Ru
     }
 
     private void showOverflowPopupMenu() {
-        Utils.showToast(this, TOAST_TYPE_INFO, "没有更多了", Toast.LENGTH_SHORT);
+        Toasts.info(this, "没有更多了");
     }
 
 }
