@@ -21,12 +21,15 @@
  */
 package cc.ioctl.hook;
 
+import static nil.nadph.qnotified.util.QQVersion.QQ_8_8_11;
 import static nil.nadph.qnotified.util.Utils.log;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import org.ferredoxin.ferredoxin_ui.base.UiSwitchPreference;
 
 import java.lang.reflect.Method;
 
@@ -35,7 +38,6 @@ import de.robv.android.xposed.XposedBridge;
 import me.singleneuron.qn_kernel.annotation.UiItem;
 import me.singleneuron.qn_kernel.base.CommonDelayAbleHookBridge;
 import me.singleneuron.qn_kernel.data.HostInfo;
-import me.singleneuron.qn_kernel.ui.base.UiSwitchPreference;
 import nil.nadph.qnotified.base.annotation.FunctionEntry;
 import nil.nadph.qnotified.step.DexDeobfStep;
 import nil.nadph.qnotified.util.DexKit;
@@ -44,7 +46,13 @@ import nil.nadph.qnotified.util.DexKit;
 @UiItem
 public class RoundAvatarHook extends CommonDelayAbleHookBridge {
 
-    private final UiSwitchPreference mUiSwitchPreference = this.new UiSwitchPreferenceItemFactory("简洁模式圆头像", "From Rikka");
+    public static final RoundAvatarHook INSTANCE = new RoundAvatarHook();
+    private final UiSwitchPreference mUiSwitchPreference = this.new UiSwitchPreferenceItemFactory(
+        "简洁模式圆头像", "From Rikka");
+
+    RoundAvatarHook() {
+        super(new DexDeobfStep(DexKit.C_SIMPLE_UI_UTIL));
+    }
 
     @NonNull
     @Override
@@ -56,12 +64,6 @@ public class RoundAvatarHook extends CommonDelayAbleHookBridge {
     @Override
     public String[] getPreferenceLocate() {
         return new String[]{"增强功能"};
-    }
-
-    public static final RoundAvatarHook INSTANCE = new RoundAvatarHook();
-
-    RoundAvatarHook() {
-        super(new DexDeobfStep(DexKit.C_SIMPLE_UI_UTIL));
     }
 
     @Override
@@ -110,6 +112,7 @@ public class RoundAvatarHook extends CommonDelayAbleHookBridge {
     @Override
     public boolean isValid() {
         Application app = HostInfo.getHostInfo().getApplication();
-        return app == null || !HostInfo.isTim();
+        return (app == null || !HostInfo.isTim()) &&
+            HostInfo.getHostInfo().getVersionCode() < QQ_8_8_11;
     }
 }
