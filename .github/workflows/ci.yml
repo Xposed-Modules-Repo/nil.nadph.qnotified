@@ -34,7 +34,7 @@ jobs:
         if ${{ !!github.head_ref }}; then echo "::warning:: Gradle $WARN_ON_PR"; fi
         git submodule init
         git submodule update
-        ./gradlew build
+        ./gradlew :app:assembleRelease
     
     - name: Sign APK
       uses: r0adkll/sign-android-release@v1
