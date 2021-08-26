@@ -45,6 +45,11 @@ jobs:
         alias: ${{ secrets.SIGN_ALIAS }}
         keyStorePassword: ${{ secrets.SIGN_KEYSTORE_PASSWORD }}
         keyPassword: ${{ secrets.SIGN_KEY_PASSWORD }}
+    - name: Get Apk Info
+      id: apk
+      uses: JantHsueh/get-apk-info-action@master
+      with:
+        apkPath: ${{steps.sign_app.outputs.signedReleaseFile}}
     - name: Get Date
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
