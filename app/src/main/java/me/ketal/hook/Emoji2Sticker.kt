@@ -22,59 +22,24 @@
 
 package me.ketal.hook
 
-import ltd.nextalone.util.clazz
-import ltd.nextalone.util.get
-import ltd.nextalone.util.hookAfter
-import ltd.nextalone.util.method
-import ltd.nextalone.util.set
-import ltd.nextalone.util.tryOrFalse
+import me.singleneuron.qn_kernel.base.CommonDelayAbleHookBridge
 import me.singleneuron.qn_kernel.data.requireMinQQVersion
-import nil.nadph.qnotified.SyncUtils
 import nil.nadph.qnotified.base.annotation.FunctionEntry
-import nil.nadph.qnotified.hook.CommonDelayableHook
 import nil.nadph.qnotified.util.QQVersion
+import org.ferredoxin.ferredoxin_ui.base.UiSwitchPreference
+import xyz.nextalone.util.*
 
 @FunctionEntry
-object Emoji2Sticker : CommonDelayableHook("Ketal_Emoji2Sticker", SyncUtils.PROC_MAIN, false) {
+object Emoji2Sticker : CommonDelayAbleHookBridge() {
+    override val preference: UiSwitchPreference=uiSwitchPreference {
+        title="关闭大号emoji"
+    }
+
     override fun isValid() = requireMinQQVersion(QQVersion.QQ_8_7_5)
 
     override fun initOnce() = tryOrFalse {
-        "Lcom/tencent/mobileqq/emoticonview/AniStickerSendMessageCallBack;->parseMsgForAniSticker(Ljava/lang/String;Lcom/tencent/mobileqq/activity/aio/BaseSessionInfo;)Lcom/tencent/mobileqq/emoticonview/AniStickerSendMessageCallBack\$AniStickerTextParseResult;"
-            .method.hookAfter(this) {
-                if (!superIsEnable()) {
-                    it.result.set("singleAniSticker", false)
-                }
-            }
-    }
-
-    fun superIsEnable(): Boolean {
-        return isValid && super.isEnabled()
-    }
-
-    override fun isEnabled() = isValid
-
-    fun parseMsgForAniSticker(str: String, session: Any) : Any? {
-        return try {
-            "Lcom/tencent/mobileqq/emoticonview/AniStickerSendMessageCallBack;->parseMsgForAniSticker(Ljava/lang/String;Lcom/tencent/mobileqq/activity/aio/BaseSessionInfo;)Lcom/tencent/mobileqq/emoticonview/AniStickerSendMessageCallBack\$AniStickerTextParseResult;"
-                .method(null, str, session)
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    fun sendParseAticker(result: Any, session: Any) {
-        val clazz = "com/tencent/mobileqq/emoticonview/AniStickerSendMessageCallBack".clazz
-            ?: return
-        for (m in clazz.declaredMethods) {
-            when(m.name) {
-                "sendAniStickerMsg" -> {
-                    m(null, result, session)
-                }
-                "sendAniSticker"  -> {
-                    val id = result.get("emoLocalId")
-                    m(null, id, session)
-                }
-            }
+        "com.tencent.mobileqq.emoticonview.AniStickerSendMessageCallBack".clazz?.method("parseMsgForAniSticker")?.hookAfter(this) {
+            it.result.set("singleAniSticker", false)
         }
     }
 }
