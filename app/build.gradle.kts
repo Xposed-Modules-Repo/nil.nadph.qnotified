@@ -23,7 +23,7 @@ android {
         targetSdk = 31
         versionCode = Common.getTimeStamp()
         // versionName = major.minor.accumulation.commit_id
-        versionName = (Common.getGitHeadRefsSuffix(rootProject))
+        versionName = "0.8.23" + (Common.getGitHeadRefsSuffix(rootProject))
         multiDexEnabled = false
         ndk {
             abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
@@ -55,14 +55,37 @@ android {
             if (performSigning) {
                 signingConfig = signingConfigs.getByName("release")
             }
+            tasks.forEach {
+                if (it.name.contains("lint")) {
+                    it.enabled = false
+                }
+            }
+            kotlinOptions.suppressWarnings = true
         }
         getByName("debug") {
             isShrinkResources = true
             isMinifyEnabled = true
             setProguardFiles(listOf(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"))
         }
+        create("CI") {
+            initWith(getByName("debug"))
+            isShrinkResources = false
+            isMinifyEnabled = false
+            signingConfig = null
+            ndk {
+                abiFilters.clear()
+                abiFilters.add("arm64-v8a")
+            }
+            matchingFallbacks += listOf("debug")
+            tasks.forEach {
+                if (it.name.contains("lint")) {
+                    it.enabled = false
+                }
+            }
+            kotlinOptions.suppressWarnings = true
+        }
     }
-    aaptOptions {
+    androidResources {
         additionalParameters("--allow-reserved-package-id", "--package-id", "0x75")
     }
     compileOptions {
@@ -110,7 +133,7 @@ dependencies {
     implementation("org.apache-extras.beanshell:bsh:2.0b6")
     // androidx
     implementation("androidx.preference:preference-ktx:1.1.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
     implementation("androidx.browser:browser:1.4.0")
     implementation("com.google.android.material:material:1.4.0")
     implementation("com.google.code.gson:gson:2.8.9")
@@ -205,7 +228,7 @@ tasks.register("dexTailRelease") {
         if ("/" != File.separator) {
             tmp_path = tmp_path.replace('/', File.separatorChar)
         }
-        var tmp_f: File = File(project.buildDir, tmp_path)
+        var tmp_f = File(project.buildDir, tmp_path)
         if (tmp_f.exists()) {
             pathList.add(tmp_f)
         }
