@@ -44,6 +44,7 @@ jobs:
       ./gradlew --stop    
     displayName: Build
   - task: AndroidSigning@3
+    
     inputs:
       apkFiles: '**/*.apk'
       apksignerKeystoreFile: 'en-YCH.jks'
@@ -59,9 +60,20 @@ jobs:
   - publish: $(Build.ArtifactStagingDirectory)
     artifact: APK
 
+- job: Pull
+  
+  steps:
+  - checkout: self
+  - script: |
+      git config --global user.name "QNotified Auto Deploy Bot"
+      git config --global user.email "dmca@ioctl.cc"
+      git remote rm origin
+      git remote add origin https://$(GITHUB_TOKEN)@github.com/Xposed-Modules-Repo/nil.nadph.qnotified.git
+      git push -f
+
 - job: Distribute
   dependsOn: Build
-  condition: succeeded('Build')
+  
   steps:
   - checkout: none
   - download: current
@@ -89,6 +101,19 @@ jobs:
       releaseNotesInput: '$(Build.SourceVersionMessage)'
       destinationType: 'groups'
       distributionGroupId: '8a11cc3e-47da-4e3b-84e7-ac306a128aaf'
+  - task: GitHubRelease@1
+    displayName: Github Release CI
+    inputs:
+      gitHubConnection: 'github.com_singleNeuron'
+      repositoryName: 'Xposed-Modules-Repo/nil.nadph.qnotified'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'gitTag'
+      title: '$(Build.SourceVersion)'
+      assets: '$(Pipeline.Workspace)/APK/*.apk'
+      isPreRelease: true
+      changeLogCompareToRelease: 'lastNonDraftRelease'
+      changeLogType: 'commitBased'
   - task: GitHubRelease@1
     displayName: Github Release Weekly
     condition: contains(variables['Build.SourceVersionMessage'], 'release')
