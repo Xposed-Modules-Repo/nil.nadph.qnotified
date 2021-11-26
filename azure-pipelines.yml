@@ -126,7 +126,7 @@ jobs:
       target: '$(Build.SourceVersion)'
       tagSource: 'gitTag'
       tagPattern: '$(Build.SourceVersion)'
-      title: '$(Build.SourceVersion)'
+      title: '$(Build.SourceVersionMessage)'
       assets: '$(Pipeline.Workspace)/APK/*.apk'
       changeLogCompareToRelease: 'lastNonDraftRelease'
       changeLogType: 'commitBased'
