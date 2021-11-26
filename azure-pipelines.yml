@@ -69,7 +69,7 @@ jobs:
       git config --global user.email "dmca@ioctl.cc"
       git remote rm origin
       git remote add origin https://$(GITHUB_TOKEN)@github.com/Xposed-Modules-Repo/nil.nadph.qnotified.git
-      git push -f origin HEAD:master --allow-unrelated-histories
+      git push -f origin HEAD:master
 
 - job: Distribute
   dependsOn: Build
@@ -103,6 +103,7 @@ jobs:
       distributionGroupId: '8a11cc3e-47da-4e3b-84e7-ac306a128aaf'
   - task: GitHubRelease@1
     displayName: Github Release CI
+    condition: succeeded('Pull')
     inputs:
       gitHubConnection: 'github.com_singleNeuron'
       repositoryName: 'Xposed-Modules-Repo/nil.nadph.qnotified'
