@@ -110,7 +110,7 @@ jobs:
       action: 'create'
       target: '$(Build.SourceVersion)'
       tagSource: 'userSpecifiedTag'
-      tag: '$(Build.SourceVersion)'
+      tag: 'format(''{yyyyMMddHHmm}'', pipeline.startTime)'
       title: '$(Build.SourceVersion)'
       assets: '$(Pipeline.Workspace)/APK/*.apk'
       isPreRelease: true
@@ -125,7 +125,7 @@ jobs:
       action: 'create'
       target: '$(Build.SourceVersion)'
       tagSource: 'userSpecifiedTag'
-      tag: '$(Build.SourceVersion)'
+      tag: 'format(''{yyyyMMddHHmm}'', pipeline.startTime)'
       title: '$(Build.SourceVersionMessage)'
       assets: '$(Pipeline.Workspace)/APK/*.apk'
       changeLogCompareToRelease: 'lastNonDraftRelease'
@@ -139,7 +139,7 @@ jobs:
       action: 'create'
       target: '$(Build.SourceVersion)'
       tagSource: 'userSpecifiedTag'
-      tag: '$(Build.SourceVersion)'
+      tag: 'format(''{yyyyMMddHHmm}'', pipeline.startTime)'
       title: '$(Build.SourceVersionMessage)'
       assets: '$(Pipeline.Workspace)/APK/*.apk'
       addChangeLog: false
