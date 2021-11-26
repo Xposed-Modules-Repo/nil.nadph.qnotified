@@ -50,30 +50,28 @@ jobs:
       apksignerKeystorePassword: '$(keyStorePassword)'
       apksignerKeystoreAlias: '$(keyAlias)'
       apksignerKeyPassword: '$(keyPassword)'
-  - task: PublishBuildArtifacts@1
+  - task: CopyFiles@2
     inputs:
-      PathtoPublish: '$(Pipeline.Workspace)/app/build/outputs/apk/release/app-release-unsigned.apk'
-      ArtifactName: 'APK'
-      publishLocation: 'Container'
+      Contents: '**/*.apk'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      CleanTargetFolder: true
+      flattenFolders: true
+  - publish: $(Build.ArtifactStagingDirectory)
+    artifact: APK
 
 - job: Distribute
   dependsOn: Build
   condition: succeeded('Build')
   steps:
   - checkout: none
-  - task: DownloadBuildArtifacts@1
-    inputs:
-      buildType: 'current'
-      downloadType: 'single'
-      artifactName: 'APK'
-      downloadPath: '$(Pipeline.Workspace)'
-      checkDownloadedFiles: true
+  - download: current
+    artifact: APK
   - task: AppCenterDistribute@3
     displayName: AppCenter Canary
     inputs:
       serverEndpoint: 'QNotified'
       appSlug: 'QNotifiedDev/QNotified'
-      appFile: '**/*.apk'
+      appFile: '$(Pipeline.Workspace)/APK/*.apk'
       symbolsOption: 'Android'
       releaseNotesOption: 'input'
       releaseNotesInput: '$(Build.SourceVersionMessage)'
@@ -85,7 +83,7 @@ jobs:
     inputs:
       serverEndpoint: 'QNotified'
       appSlug: 'QNotifiedDev/QNotified'
-      appFile: '**/*.apk'
+      appFile: '$(Pipeline.Workspace)/APK/*.apk'
       symbolsOption: 'Android'
       releaseNotesOption: 'input'
       releaseNotesInput: '$(Build.SourceVersionMessage)'
@@ -101,5 +99,5 @@ jobs:
       target: '$(Build.SourceVersion)'
       tagSource: 'gitTag'
       title: '$(Build.SourceVersionMessage)'
-      assets: '**/*.apk'
+      assets: '$(Pipeline.Workspace)/APK/*.apk'
       addChangeLog: false
