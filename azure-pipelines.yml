@@ -117,6 +117,19 @@ jobs:
       changeLogType: 'commitBased'
   - task: GitHubRelease@1
     displayName: Github Release Weekly
+    condition: and(succeeded('Pull'),not(contains(variables['Build.SourceVersionMessage'], 'release')))
+    inputs:
+      gitHubConnection: 'github.com_singleNeuron'
+      repositoryName: 'Xposed-Modules-Repo/nil.nadph.qnotified'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'gitTag'
+      title: '$(Build.SourceVersion)'
+      assets: '$(Pipeline.Workspace)/APK/*.apk'
+      changeLogCompareToRelease: 'lastNonDraftRelease'
+      changeLogType: 'commitBased'
+  - task: GitHubRelease@1
+    displayName: Github Release Weekly
     condition: contains(variables['Build.SourceVersionMessage'], 'release')
     inputs:
       gitHubConnection: 'github.com_singleNeuron'
