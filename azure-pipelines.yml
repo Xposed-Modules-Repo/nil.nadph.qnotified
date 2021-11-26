@@ -51,11 +51,24 @@ jobs:
       apksignerKeystorePassword: '$(keyStorePassword)'
       apksignerKeystoreAlias: '$(keyAlias)'
       apksignerKeyPassword: '$(keyPassword)'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '**/*.apk'
+      ArtifactName: 'APK'
+      publishLocation: 'Container'
 
 - job: Distribute
   dependsOn: Build
   condition: and(succeeded('Build'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   steps:
+  - checkout: none
+  - task: DownloadBuildArtifacts@1
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'APK'
+      downloadPath: '$(System.DefaultWorkingDirectory)'
+      checkDownloadedFiles: true
   - task: AppCenterDistribute@3
     displayName: AppCenter Canary
     inputs:
