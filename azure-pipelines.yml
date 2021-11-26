@@ -110,7 +110,7 @@ jobs:
       action: 'create'
       target: '$(Build.SourceVersion)'
       tagSource: 'userSpecifiedTag'
-      tag: $(format('{yyyyMMddHHmm}', pipeline.startTime))'
+      tag: $(format('{yyyyMMddHHmm}', pipeline.startTime))
       title: '$(Build.SourceVersion)'
       releaseNotesSource: 'inline'
       releaseNotesInline: '$(Build.SourceVersionMessage)'
