@@ -44,7 +44,6 @@ jobs:
       ./gradlew --stop    
     displayName: Build
   - task: AndroidSigning@3
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     inputs:
       apkFiles: '**/*.apk'
       apksignerKeystoreFile: 'en-YCH.jks'
@@ -59,7 +58,7 @@ jobs:
 
 - job: Distribute
   dependsOn: Build
-  condition: and(succeeded('Build'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded('Build')
   steps:
   - checkout: none
   - task: DownloadBuildArtifacts@1
