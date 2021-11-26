@@ -103,7 +103,7 @@ jobs:
       distributionGroupId: '8a11cc3e-47da-4e3b-84e7-ac306a128aaf'
   - task: GitHubRelease@1
     displayName: Github Release CI
-    condition: succeeded('Pull')
+    condition: succeeded()
     inputs:
       gitHubConnection: 'github.com_singleNeuron'
       repositoryName: 'Xposed-Modules-Repo/nil.nadph.qnotified'
@@ -117,7 +117,7 @@ jobs:
       changeLogType: 'commitBased'
   - task: GitHubRelease@1
     displayName: Github Release Weekly
-    condition: and(succeeded('Pull'),not(contains(variables['Build.SourceVersionMessage'], 'release')))
+    condition: and(succeeded(),not(contains(variables['Build.SourceVersionMessage'], 'release')))
     inputs:
       gitHubConnection: 'github.com_singleNeuron'
       repositoryName: 'Xposed-Modules-Repo/nil.nadph.qnotified'
