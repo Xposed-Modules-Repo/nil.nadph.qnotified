@@ -58,7 +58,7 @@ jobs:
 
 - job: Distribute
   dependsOn: Build
-  condition: and(succeeded('Build')
+  condition: succeeded('Build')
   steps:
   - checkout: none
   - task: DownloadBuildArtifacts@1
